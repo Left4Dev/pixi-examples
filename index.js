@@ -62,7 +62,7 @@ class Example {
 
     this.app.ticker.add(()=> {
         // Offset the sprite position to make vFilterCoord update to larger value. Repeat wrapping makes sure there's still pixels on the coordinates.
-        this.displacementSprites[0].y-=14;
+        this.displacementSprites[0].y-=2;
         // Reset x to 0 when it's over width to keep values from going to very huge numbers.
         if (this.displacementSprites[0].y < 0) this.displacementSprites[0].y = this.displacementSprites[0].height;
 
