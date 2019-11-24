@@ -48,7 +48,7 @@ class Example {
 
     displacementFilter.scale.x = 200;
     displacementFilter.scale.y = 200;
-    displacementSprite.y =  displacementSprite.height
+    // displacementSprite.y =  displacementSprite.height
 
   }
   create(){
@@ -62,9 +62,9 @@ class Example {
 
     this.app.ticker.add(()=> {
         // Offset the sprite position to make vFilterCoord update to larger value. Repeat wrapping makes sure there's still pixels on the coordinates.
-        this.displacementSprites[0].y-=2;
+        this.displacementSprites[0].y-=5;
         // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        if (this.displacementSprites[0].y < 0) this.displacementSprites[0].y = this.displacementSprites[0].height;
+        if (this.displacementSprites[0].y < -this.displacementSprites[0].height) this.displacementSprites[0].y = 0;
 
         // this.displacementSprites[1].x-=4;
         // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
