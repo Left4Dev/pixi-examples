@@ -26,14 +26,14 @@ class Example {
   }
   addSprite(){
 
-    this.backgroundSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80');
+    this.backgroundSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=20');
     this.container.addChild(this.backgroundSprite);
     this.backgroundSprite.x = 0;
     this.backgroundSprite.y = 0;
   }
   addDisplacementFilter(){
     const displacementSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80');
-    displacementSprite.scale.y=20
+    displacementSprite.scale.y=5
     
     // Make sure the sprite is wrapping.
     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
@@ -46,8 +46,8 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 80;
-    displacementFilter.scale.y = 80;
+    displacementFilter.scale.x = 20;
+    displacementFilter.scale.y = 20;
 
     displacementSprite.y =  displacementSprite.height
 
@@ -63,9 +63,9 @@ class Example {
 
     this.app.ticker.add(()=> {
         // Offset the sprite position to make vFilterCoord update to larger value. Repeat wrapping makes sure there's still pixels on the coordinates.
-        this.displacementSprites[0].y-=4;
+        this.displacementSprites[0].y-=14;
         // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        if (this.displacementSprites[0].y < 0) this.displacementSprites[0].y = 0;
+        if (this.displacementSprites[0].y < 0) this.displacementSprites[0].y = this.displacementSprites[0].height;
 
         // this.displacementSprites[1].x-=4;
         // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
