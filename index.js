@@ -46,7 +46,7 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 20;
+    displacementFilter.scale.x = 200;
     displacementFilter.scale.y = 20;
 
     displacementSprite.y =  displacementSprite.height
