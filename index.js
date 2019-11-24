@@ -33,7 +33,7 @@ class Example {
   }
   addDisplacementFilter(){
     const displacementSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80');
-    displacementSprite.scale.y=5
+    displacementSprite.scale.y=50
     
     // Make sure the sprite is wrapping.
     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
@@ -42,13 +42,12 @@ class Example {
     this.displacementSprites.push(displacementSprite)
     this.displacementFilters.push(displacementFilter)
 
-    displacementSprite.position = this.backgroundSprite.position;
+    // displacementSprite.position = this.backgroundSprite.position;
 
     this.app.stage.addChild(displacementSprite);
 
     displacementFilter.scale.x = 200;
-    displacementFilter.scale.y = 20;
-
+    displacementFilter.scale.y = 200;
     displacementSprite.y =  displacementSprite.height
 
   }
