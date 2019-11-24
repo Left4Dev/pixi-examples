@@ -59,14 +59,18 @@ window.PIXI = PIXI;
 // 	}
 // }
 
-
+const sprite = 'https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
+const sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
+const displacement_sprite = 'https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80'
+const displacement_sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
 class Example {
   constructor(){
 
+    this.backgroundSprites = []
     this.displacementSprites = []
     this.displacementFilters = []
     
-    this.app = new PIXI.Application({height:1200, width:700});
+    this.app = new PIXI.Application({height:1200, width:800});
     document.body.appendChild(this.app.view);
 
     this.app.stage.interactive = true;
@@ -76,16 +80,25 @@ class Example {
     
     this.create();
   }
-  addSprite(){
+  addSprite(url,alpha,blendMode){
 
-    this.backgroundSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=20');
-    this.container.addChild(this.backgroundSprite);
-    this.backgroundSprite.x = 0;
-    this.backgroundSprite.y = 0;
+    const backgroundSprite = PIXI.Sprite.from(url||sprite1);
+    backgroundSprite.x = 0;
+    backgroundSprite.y = 0;
+
+
+    this.container.addChild(backgroundSprite);
+    this.backgroundSprites.push(backgroundSprite)
+
+    backgroundSprite.blendMode = blendMode||4
+    backgroundSprite.alpha = alpha||0.8
+
+
   }
   addDisplacementFilter(){
-    const displacementSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80');
+    const displacementSprite = PIXI.Sprite.from(displacement_sprite);
     displacementSprite.scale.y=30
+    displacementSprite.scale.x=30
     
     // Make sure the sprite is wrapping.
     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.MIRRORED_REPEAT;
@@ -98,38 +111,40 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 100;
-    displacementFilter.scale.y = 100;
+    displacementFilter.scale.x = 110;
+    displacementFilter.scale.y = 110;
     // displacementSprite.y =  displacementSprite.height
 
   }
   create(){
-    this.addSprite()
+    // this.addSprite(sprite,1,3)
+    this.addSprite(sprite1,0.8,3)
+    this.addSprite(sprite1,0.8,1)
+    this.addSprite(sprite,0.5,1)
+
     this.addDisplacementFilter()
     this.addDisplacementFilter()
-    // this.addDisplacementFilter()
-    // this.addDisplacementFilter()
-    
-    this.backgroundSprite.filters = this.displacementFilters
+
+    // this.backgroundSprites.forEach((i)=>i.filters = this.displacementFilters)
+    this.backgroundSprites[0].position.x=-400
+    this.backgroundSprites[1].position.x=-200
+    this.backgroundSprites[0].filters = [this.displacementFilters[0]]
+    this.backgroundSprites[1].filters = [this.displacementFilters[1]]
+    this.backgroundSprites[2].filters = [this.displacementFilters[1]]
 
     this.app.ticker.add(()=> {
-        // Offset the sprite position to make vFilterCoord update to larger value. Repeat wrapping makes sure there's still pixels on the coordinates.
         this.displacementSprites[0].y-=5;
         this.displacementSprites[0].angle-=0.01;
         if (this.displacementSprites[0].y < -(2*this.displacementSprites[0].height)) this.displacementSprites[0].y = 0;
 
-        // this.displacementSprites[1].angle-=0.01;
+        this.displacementSprites[1].y-=4;
+        this.displacementSprites[1].angle-=Math.PI/180;
+        if (this.displacementSprites[1].y < -(2*this.displacementSprites[1].height)) this.displacementSprites[1].y = 0;
 
-        this.displacementSprites[1].x-=4;
-        // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
-        // this.displacementSprites[2].x-=1;
-        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        // if (this.displacementSprites[2].x < 0) this.displacementSprites[2].x = 0;
 
-        //         this.displacementSprites[3].y-=1;
-        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        // if (this.displacementSprites[3].y < 0) this.displacementSprites[3].y = 0;
+        // this.displacementSprites[1].x-=4;
+        // if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
+
 
     });
     }
