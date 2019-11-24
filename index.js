@@ -55,7 +55,9 @@ class Example {
   create(){
     this.addSprite()
     this.addDisplacementFilter()
-    this.addDisplacementFilter()
+    // this.addDisplacementFilter()
+    // this.addDisplacementFilter()
+    // this.addDisplacementFilter()
     
     this.backgroundSprite.filters = this.displacementFilters
 
@@ -65,9 +67,17 @@ class Example {
         // Reset x to 0 when it's over width to keep values from going to very huge numbers.
         if (this.displacementSprites[0].y < 0) this.displacementSprites[0].y = 0;
 
-        this.displacementSprites[1].x-=4;
-        // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        if (this.displacementSprites[1].x < 0) this.displacementSprites[1].x = 0;
+        // this.displacementSprites[1].x-=4;
+        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
+        // if (this.displacementSprites[1].x < 0) this.displacementSprites[1].x = 0;
+        // this.displacementSprites[2].x-=1;
+        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
+        // if (this.displacementSprites[2].x < 0) this.displacementSprites[2].x = 0;
+
+        //         this.displacementSprites[3].y-=1;
+        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
+        // if (this.displacementSprites[3].y < 0) this.displacementSprites[3].y = 0;
+
     });
     }
 
