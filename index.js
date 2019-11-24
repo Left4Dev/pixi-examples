@@ -61,8 +61,8 @@ window.PIXI = PIXI;
 
 const sprite = 'https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
 const sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
-const displacement_sprite = 'https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80'
-const displacement_sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
+const displacement_sprite =  ['https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80',
+'https://images.unsplash.com/photo-1574537018953-133e48795d7f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80']
 class Example {
   constructor(){
 
@@ -86,7 +86,6 @@ class Example {
     backgroundSprite.x = 0;
     backgroundSprite.y = 0;
 
-
     this.container.addChild(backgroundSprite);
     this.backgroundSprites.push(backgroundSprite)
 
@@ -95,10 +94,10 @@ class Example {
 
 
   }
-  addDisplacementFilter(){
-    const displacementSprite = PIXI.Sprite.from(displacement_sprite);
-    displacementSprite.scale.y=30
-    displacementSprite.scale.x=30
+  addDisplacementFilter(sprite){
+    const displacementSprite = PIXI.Sprite.from(sprite||displacement_sprite[0]);
+    displacementSprite.scale.y=20
+    displacementSprite.scale.x=10
     
     // Make sure the sprite is wrapping.
     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.MIRRORED_REPEAT;
@@ -111,39 +110,43 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 110;
-    displacementFilter.scale.y = 110;
+    displacementFilter.scale.x = 80;
+    displacementFilter.scale.y = 80;
     // displacementSprite.y =  displacementSprite.height
 
   }
   create(){
     // this.addSprite(sprite,1,3)
-    this.addSprite(sprite1,0.8,3)
-    this.addSprite(sprite1,0.8,1)
+    this.addSprite(sprite1,1,1)
+    this.addSprite(sprite1,0.5,1)
+    this.addSprite(sprite1,0.3,1)
     this.addSprite(sprite,0.5,1)
 
     this.addDisplacementFilter()
-    this.addDisplacementFilter()
+    this.addDisplacementFilter(displacement_sprite[1])
 
     // this.backgroundSprites.forEach((i)=>i.filters = this.displacementFilters)
-    this.backgroundSprites[0].position.x=-400
+    this.backgroundSprites[0].position.x=-500
     this.backgroundSprites[1].position.x=-200
+    this.backgroundSprites[2].position.x=-800
     this.backgroundSprites[0].filters = [this.displacementFilters[0]]
     this.backgroundSprites[1].filters = [this.displacementFilters[1]]
-    this.backgroundSprites[2].filters = [this.displacementFilters[1]]
+    this.backgroundSprites[2].filters = [this.displacementFilters[0]]
+    this.backgroundSprites[3].filters = [this.displacementFilters[1]]
 
     this.app.ticker.add(()=> {
         this.displacementSprites[0].y-=5;
-        this.displacementSprites[0].angle-=0.01;
+        // this.displacementSprites[0].angle=this.displacementSprites[0].angle>=Math.PI*2?0:this.displacementSprites[0].angle+(Math.PI/180);
         if (this.displacementSprites[0].y < -(2*this.displacementSprites[0].height)) this.displacementSprites[0].y = 0;
 
         this.displacementSprites[1].y-=4;
-        this.displacementSprites[1].angle-=Math.PI/180;
+        // this.displacementSprites[1].angle=this.displacementSprites[1].angle>=Math.PI*2?0:this.displacementSprites[1].angle+(Math.PI/180);
+
         if (this.displacementSprites[1].y < -(2*this.displacementSprites[1].height)) this.displacementSprites[1].y = 0;
 
 
-        // this.displacementSprites[1].x-=4;
-        // if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
+        this.displacementSprites[1].x-=4;
+        if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
 
 
     });
