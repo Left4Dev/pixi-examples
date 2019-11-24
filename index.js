@@ -5,7 +5,59 @@ import * as PIXI from 'pixi.js'
 window.PIXI = PIXI;
 
 
-
+// {
+// 	"alpha": {
+// 		"start": 1,
+// 		"end": 0
+// 	},
+// 	"scale": {
+// 		"start": 2,
+// 		"end": 1,
+// 		"minimumScaleMultiplier": 0.001
+// 	},
+// 	"color": {
+// 		"start": "#ffed66",
+// 		"end": "#ff330a"
+// 	},
+// 	"speed": {
+// 		"start": 200,
+// 		"end": 43,
+// 		"minimumSpeedMultiplier": 2
+// 	},
+// 	"acceleration": {
+// 		"x": 0,
+// 		"y": 0
+// 	},
+// 	"maxSpeed": 0,
+// 	"startRotation": {
+// 		"min": 0,
+// 		"max": 360
+// 	},
+// 	"noRotation": false,
+// 	"rotationSpeed": {
+// 		"min": 10,
+// 		"max": 100
+// 	},
+// 	"lifetime": {
+// 		"min": 0.2,
+// 		"max": 1.13
+// 	},
+// 	"blendMode": "normal",
+// 	"frequency": 0.001,
+// 	"emitterLifetime": -1,
+// 	"maxParticles": 1000,
+// 	"pos": {
+// 		"x": 0,
+// 		"y": 0
+// 	},
+// 	"addAtBack": true,
+// 	"spawnType": "circle",
+// 	"spawnCircle": {
+// 		"x": 0,
+// 		"y": 0,
+// 		"r": 50
+// 	}
+// }
 
 
 class Example {
@@ -33,10 +85,10 @@ class Example {
   }
   addDisplacementFilter(){
     const displacementSprite = PIXI.Sprite.from('https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80');
-    displacementSprite.scale.y=50
+    displacementSprite.scale.y=30
     
     // Make sure the sprite is wrapping.
-    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.MIRRORED_REPEAT;
     const displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
 
     this.displacementSprites.push(displacementSprite)
@@ -46,15 +98,15 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 200;
-    displacementFilter.scale.y = 200;
+    displacementFilter.scale.x = 100;
+    displacementFilter.scale.y = 100;
     // displacementSprite.y =  displacementSprite.height
 
   }
   create(){
     this.addSprite()
     this.addDisplacementFilter()
-    // this.addDisplacementFilter()
+    this.addDisplacementFilter()
     // this.addDisplacementFilter()
     // this.addDisplacementFilter()
     
@@ -63,12 +115,14 @@ class Example {
     this.app.ticker.add(()=> {
         // Offset the sprite position to make vFilterCoord update to larger value. Repeat wrapping makes sure there's still pixels on the coordinates.
         this.displacementSprites[0].y-=5;
-        // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        if (this.displacementSprites[0].y < -this.displacementSprites[0].height) this.displacementSprites[0].y = 0;
+        this.displacementSprites[0].angle-=0.01;
+        if (this.displacementSprites[0].y < -(2*this.displacementSprites[0].height)) this.displacementSprites[0].y = 0;
 
-        // this.displacementSprites[1].x-=4;
-        // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
-        // if (this.displacementSprites[1].x < 0) this.displacementSprites[1].x = 0;
+        // this.displacementSprites[1].angle-=0.01;
+
+        this.displacementSprites[1].x-=4;
+        // Reset x to 0 when it's over width to keep values from going to very huge numbers.
+        if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
         // this.displacementSprites[2].x-=1;
         // // Reset x to 0 when it's over width to keep values from going to very huge numbers.
         // if (this.displacementSprites[2].x < 0) this.displacementSprites[2].x = 0;
