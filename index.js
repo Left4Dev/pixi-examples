@@ -58,11 +58,11 @@ window.PIXI = PIXI;
 // 		"r": 50
 // 	}
 // }
-
-const sprite = 'https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
-const sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
+const spriteCollection = [{ url : '', name:'', blend:1,alpha:1,x:0,y:0,scaleX:1,scaleY:1}]
+const sprite = ['https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
+, 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80',
 // const sprite2 = 'https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
-const sprite2 = 'https://images.unsplash.com/photo-1472145246862-b24cf25c4a36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80'
+'https://images.unsplash.com/photo-1472145246862-b24cf25c4a36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80']
 const displacement_sprite =  ['https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
 'https://images.unsplash.com/photo-1574537018953-133e48795d7f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80']
 class Example {
@@ -142,11 +142,11 @@ class Example {
     this.displacementSprites=[]
   }
   create(){
-    this.addSprite(sprite1,{alpha:1,blend:1})
-    this.addSprite(sprite1,{alpha:0.5,blend:1})
-    this.addSprite(sprite1,{alpha:0.3,blend:1})
-    this.addSprite(sprite,{alpha:0.5,blend:1})
-    this.addSprite(sprite2,{alpha:0.651,blend:1})
+    this.addSprite(sprite[1],{alpha:1,blend:1})
+    this.addSprite(sprite[1],{alpha:0.5,blend:1})
+    this.addSprite(sprite[1],{alpha:0.3,blend:1})
+    this.addSprite(sprite[0],{alpha:0.5,blend:1})
+    this.addSprite(sprite[2],{alpha:0.651,blend:1})
 
     this.addDisplacementFilter(displacement_sprite[0],{scaleX:10,scaleY:10,displaceX:50,displaceY:50})
     this.addDisplacementFilter(displacement_sprite[1],{scaleX:10,scaleY:50,displaceX:20,displaceY:20})
