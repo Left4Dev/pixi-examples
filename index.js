@@ -61,7 +61,9 @@ window.PIXI = PIXI;
 
 const sprite = 'https://images.unsplash.com/photo-1543005472-1b1d37fa4eae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
 const sprite1 = 'https://images.unsplash.com/photo-1574482550419-2dab78b38637?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80'
-const displacement_sprite =  ['https://images.unsplash.com/photo-1497044725446-4156b475ea88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80',
+// const sprite2 = 'https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
+const sprite2 = 'https://images.unsplash.com/photo-1472145246862-b24cf25c4a36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80'
+const displacement_sprite =  ['https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
 'https://images.unsplash.com/photo-1574537018953-133e48795d7f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80']
 class Example {
   constructor(){
@@ -74,30 +76,31 @@ class Example {
     document.body.appendChild(this.app.view);
 
     this.app.stage.interactive = true;
-
     this.container = new PIXI.Container();
     this.app.stage.addChild(this.container);
     
     this.create();
   }
-  addSprite(url,alpha,blendMode){
+  addSprite(url,options){
 
     const backgroundSprite = PIXI.Sprite.from(url||sprite1);
     backgroundSprite.x = 0;
     backgroundSprite.y = 0;
+    backgroundSprite.scale.y=options.scaleY||1
+    backgroundSprite.scale.x=options.scaleY||1
 
     this.container.addChild(backgroundSprite);
     this.backgroundSprites.push(backgroundSprite)
 
-    backgroundSprite.blendMode = blendMode||4
-    backgroundSprite.alpha = alpha||0.8
+    backgroundSprite.blendMode = options.blendMode||4
+    backgroundSprite.alpha = options.alpha||0.8
 
 
   }
-  addDisplacementFilter(sprite){
+  addDisplacementFilter(sprite,options){
     const displacementSprite = PIXI.Sprite.from(sprite||displacement_sprite[0]);
-    displacementSprite.scale.y=20
-    displacementSprite.scale.x=10
+    displacementSprite.scale.y=options.scaleY||20
+    displacementSprite.scale.x=options.scaleX||10
     
     // Make sure the sprite is wrapping.
     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.MIRRORED_REPEAT;
@@ -110,47 +113,65 @@ class Example {
 
     this.app.stage.addChild(displacementSprite);
 
-    displacementFilter.scale.x = 80;
-    displacementFilter.scale.y = 80;
+    displacementFilter.scale.x = options.displaceX||80;
+    displacementFilter.scale.y = options.displaceY||80;
     // displacementSprite.y =  displacementSprite.height
 
   }
-  create(){
-    // this.addSprite(sprite,1,3)
-    this.addSprite(sprite1,1,1)
-    this.addSprite(sprite1,0.5,1)
-    this.addSprite(sprite1,0.3,1)
-    this.addSprite(sprite,0.5,1)
-
-    this.addDisplacementFilter()
-    this.addDisplacementFilter(displacement_sprite[1])
-
+  assignFilter(){
     // this.backgroundSprites.forEach((i)=>i.filters = this.displacementFilters)
+
     this.backgroundSprites[0].position.x=-500
     this.backgroundSprites[1].position.x=-200
     this.backgroundSprites[2].position.x=-800
+   this.backgroundSprites[0].mask=this.backgroundSprites[4]
+   this.backgroundSprites[1].mask=this.backgroundSprites[4]
+   this.backgroundSprites[2].mask=this.backgroundSprites[4]
+   this.backgroundSprites[3].mask=this.backgroundSprites[4]
     this.backgroundSprites[0].filters = [this.displacementFilters[0]]
     this.backgroundSprites[1].filters = [this.displacementFilters[1]]
     this.backgroundSprites[2].filters = [this.displacementFilters[0]]
     this.backgroundSprites[3].filters = [this.displacementFilters[1]]
+    this.backgroundSprites[3].filters = [this.displacementFilters[1]]
 
+  }
+  destroy(){
+    while(this.app.stage.children[0]) { this.app.stage.removeChild(this.app.stage.children[0]); }
+    this.backgroundSprites=[]
+    this.displacementFilters=[]
+    this.displacementSprites=[]
+  }
+  create(){
+    this.addSprite(sprite1,{alpha:1,blend:1})
+    this.addSprite(sprite1,{alpha:0.5,blend:1})
+    this.addSprite(sprite1,{alpha:0.3,blend:1})
+    this.addSprite(sprite,{alpha:0.5,blend:1})
+    this.addSprite(sprite2,{alpha:0.651,blend:1})
+
+    this.addDisplacementFilter(displacement_sprite[0],{scaleX:10,scaleY:10,displaceX:50,displaceY:50})
+    this.addDisplacementFilter(displacement_sprite[1],{scaleX:10,scaleY:50,displaceX:20,displaceY:20})
+
+    this.assignFilter()
     this.app.ticker.add(()=> {
-        this.displacementSprites[0].y-=5;
-        // this.displacementSprites[0].angle=this.displacementSprites[0].angle>=Math.PI*2?0:this.displacementSprites[0].angle+(Math.PI/180);
-        if (this.displacementSprites[0].y < -(2*this.displacementSprites[0].height)) this.displacementSprites[0].y = 0;
+        if(this.displacementSprites.length==0)
+          return
 
-        this.displacementSprites[1].y-=4;
+        this.displacementSprites[0].y-=15;
+        // this.displacementSprites[0].angle=this.displacementSprites[0].angle>=Math.PI*2?0:this.displacementSprites[0].angle+(Math.PI/180);
+        if (this.displacementSprites[0].y < -(3*this.displacementSprites[0].height)) this.displacementSprites[0].y = 0;
+
+        this.displacementSprites[1].y-=14;
         // this.displacementSprites[1].angle=this.displacementSprites[1].angle>=Math.PI*2?0:this.displacementSprites[1].angle+(Math.PI/180);
 
-        if (this.displacementSprites[1].y < -(2*this.displacementSprites[1].height)) this.displacementSprites[1].y = 0;
+        if (this.displacementSprites[1].y < -(3*this.displacementSprites[1].height)) this.displacementSprites[1].y = 0;
 
 
-        this.displacementSprites[1].x-=4;
-        if (this.displacementSprites[1].x < -(2*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
-
+        this.displacementSprites[1].x-=14;
+        if (this.displacementSprites[1].x < -(3*this.displacementSprites[1].width)) this.displacementSprites[1].x = 0;
 
     });
     }
+
 
 
 }
